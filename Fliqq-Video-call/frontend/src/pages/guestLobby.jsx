@@ -13,6 +13,7 @@ export default function GuestLobby() {
     const [copied, setCopied] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mediaError, setMediaError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const generateMeetingCode = () => {
         const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -48,6 +49,7 @@ export default function GuestLobby() {
     };
 
     const getVideo = async () => {
+        setIsLoading(true);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
             if (videoRef.current) {
@@ -57,6 +59,8 @@ export default function GuestLobby() {
         } catch (err) {
             console.error("Error accessing media devices:", err);
             setMediaError(true);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -351,8 +355,9 @@ export default function GuestLobby() {
                                 variant="contained"
                                 color="primary"
                                 onClick={getVideo}
+                                disabled={isLoading}
                             >
-                                Enable Camera
+                                {isLoading ? "enabling..." : "Enable Camera"}
                             </Button>
                         </Box>
                     )}
