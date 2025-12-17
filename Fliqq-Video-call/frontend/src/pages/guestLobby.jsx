@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Container, TextField, Typography, AppBar, Toolbar, IconButton, Tooltip } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, AppBar, Toolbar, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,8 +12,9 @@ export default function GuestLobby() {
     const [showMeetingCode] = useState(true); // Always visible
     const [copied, setCopied] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [mediaError, setMediaError] = useState(false);
+    const [mediaError, setMediaError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [openPermissionDialog, setOpenPermissionDialog] = useState(false);
 
     const generateMeetingCode = () => {
         const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -54,11 +55,17 @@ export default function GuestLobby() {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
-                setMediaError(false);
+                setMediaError("");
+                setOpenPermissionDialog(false);
             }
         } catch (err) {
             console.error("Error accessing media devices:", err);
-            setMediaError(true);
+            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                setMediaError("Permission Denied");
+            } else {
+                setMediaError("Camera Error");
+            }
+            setOpenPermissionDialog(true);
         } finally {
             setIsLoading(false);
         }
@@ -344,12 +351,19 @@ export default function GuestLobby() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             gap: 2,
-                            bgcolor: 'rgba(255,255,255,0.9)',
+                            bgcolor: 'rgba(255,255,255,0.95)',
                             p: 3,
-                            borderRadius: 2
+                            borderRadius: 2,
+                            textAlign: 'center',
+                            width: '80%'
                         }}>
-                            <Typography color="error" fontWeight={600} textAlign="center">
-                                Camera Access Required
+                            <Typography color="error" fontWeight={600} variant="h6">
+                                {mediaError === "Permission Denied" ? "Access Blocked" : "Camera Error"}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                {mediaError === "Permission Denied"
+                                    ? "Please allow camera access in your browser address bar."
+                                    : "We couldn't access your camera."}
                             </Typography>
                             <Button
                                 variant="contained"
@@ -357,12 +371,52 @@ export default function GuestLobby() {
                                 onClick={getVideo}
                                 disabled={isLoading}
                             >
-                                {isLoading ? "enabling..." : "Enable Camera"}
+                                {isLoading ? "Retrying..." : "Try Again"}
                             </Button>
                         </Box>
                     )}
                 </Box>
             </Box>
+
+            {/* Dialog for explicit 'Popup' request */}
+            <Dialog
+                open={openPermissionDialog}
+                onClose={() => setOpenPermissionDialog(false)}
+                PaperProps={{
+                    sx: { borderRadius: 2, p: 1 }
+                }}
+            >
+                <DialogTitle sx={{ fontWeight: 700, color: '#9333ea', textAlign: 'center' }}>
+                    Camera Access Needed
+                </DialogTitle>
+                <DialogContent>
+                    <Typography textAlign="center" sx={{ mb: 2 }}>
+                        To join the video call, Fliqq needs access to your camera and microphone.
+                    </Typography>
+                    <Box sx={{ bgcolor: '#f3f4f6', p: 2, borderRadius: 1, mb: 2 }}>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                            If the prompt didn't appear:
+                        </Typography>
+                        <ol style={{ paddingLeft: '20px', margin: '8px 0' }}>
+                            <li>Look for a <strong>lock icon</strong> or <strong>camera icon</strong> in your address bar URL.</li>
+                            <li>Click it and select <strong>"Allow"</strong> or <strong>"Reset Permission"</strong>.</li>
+                            <li>Refresh the page.</li>
+                        </ol>
+                    </Box>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
+                    <Button
+                        onClick={() => {
+                            setOpenPermissionDialog(false);
+                            getVideo();
+                        }}
+                        variant="contained"
+                        sx={{ bgcolor: '#0284C7', '&:hover': { bgcolor: '#0ea5e9' } }}
+                    >
+                        I've Enabled It
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Footer - With specific shadow form as requested */}
             <Box component="footer" sx={{
