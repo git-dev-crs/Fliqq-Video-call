@@ -29,7 +29,7 @@ export default function LandingPage() {
             display: 'flex',
             flexDirection: 'column'
         }}>
-            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: 'rgba(0, 0, 0, 0.22) 0px 4px 10px', py: '0.5rem', px: '1rem' }}>
+            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)', py: '0.5rem', px: '1rem' }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}>
@@ -190,14 +190,13 @@ export default function LandingPage() {
                     <Typography
                         component="h2"
                         sx={{
-                            fontSize: { xs: '1.5rem', md: '2rem' },
-                            fontWeight: 800,
+                            fontSize: { xs: '2rem', md: '2.5rem' },
+                            fontWeight: 700,
                             color: '#000000',
                             fontFamily: 'Poppins, Inter, sans-serif',
-                            lineHeight: 1.3,
+                            lineHeight: 1.2,
                             letterSpacing: '-0.03em',
-                            mb: 2,
-                            whiteSpace: 'nowrap'
+                            mb: 2
                         }}
                     >
                         Seamless Video Calling with Fliqq

@@ -34,12 +34,9 @@ export const connectToSocket = (server) => {
                 }
 
                 // Send chat history
-                if (messages[path] !== undefined) {
-                    for (let a = 0; a < messages[path].length; ++a) {
-                        io.to(socket.id).emit("chat-message", messages[path][a]['data'],
-                            messages[path][a]['sender'], messages[path][a]['socket-id-sender'])
-                    }
-                }
+                // if (messages[path] !== undefined) {
+                //     io.to(socket.id).emit("chat-history", messages[path])
+                // }
             } catch (e) {
                 console.error(`Error in join-call for socket ${socket.id}:`, e);
             }

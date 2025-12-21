@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 
 export default function GuestLobby() {
+    const [username, setUsername] = useState("");
     const videoRef = useRef(null);
     const router = useNavigate();
     const [meetingCode, setMeetingCode] = useState("");
@@ -39,8 +40,13 @@ export default function GuestLobby() {
     }, []);
 
     const handleJoin = () => {
-        // Navigate to the video meeting page with the meeting code
-        router(`/${meetingCode}`);
+        // Navigate to the video meeting page with the meeting code and username
+        if (username.trim()) {
+            router(`/${meetingCode}`, { state: { username: username } });
+        } else {
+            // Optional: Alert user to enter username or generate a guest one
+            router(`/${meetingCode}`, { state: { username: "Guest" } });
+        }
     };
 
     const handleCopy = () => {
@@ -78,7 +84,7 @@ export default function GuestLobby() {
     return (
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'white' }}>
             {/* Header - Exact Match from Landing Page */}
-            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: 'rgba(0, 0, 0, 0.22) 0px 4px 10px', py: '0.5rem', px: '1rem' }}>
+            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)', py: '0.5rem', px: '1rem' }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                         <Box
@@ -249,6 +255,8 @@ export default function GuestLobby() {
                     <TextField
                         fullWidth
                         placeholder="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         variant="outlined"
                         sx={{
                             mb: 2,
