@@ -38,7 +38,7 @@ function Dashboard() {
             <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 1 }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate("/home")}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate("/")}>
                             <Box
                                 component="img"
                                 src="/fliq_logo_white.png"
@@ -49,8 +49,9 @@ function Dashboard() {
                                 component="h1"
                                 sx={{
                                     fontSize: '1.5rem',
-                                    fontWeight: 600,
-                                    color: '#b588d9'
+                                    fontWeight: 800,
+                                    color: '#b588d9',
+                                    fontFamily: 'Poppins, sans-serif'
                                 }}
                             >
                                 Fliqq
