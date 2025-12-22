@@ -102,8 +102,21 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const getUserDetails = async () => {
+        try {
+            let request = await client.get("/get_user_details", {
+                params: {
+                    token: localStorage.getItem("token")
+                }
+            });
+            return request.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+
     const data = {
-        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin, handleGoogleLogin
+        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin, handleGoogleLogin, getUserDetails
     }
 
     return (

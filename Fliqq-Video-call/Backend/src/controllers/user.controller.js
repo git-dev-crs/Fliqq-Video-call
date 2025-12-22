@@ -157,4 +157,24 @@ const googleAuth = async (req, res) => {
     }
 }
 
-export { login, register, getUserHistory, addToHistory, googleAuth }
+const getUserDetails = async (req, res) => {
+    const { token } = req.query;
+
+    if (!token) {
+        return res.status(httpStatus.BAD_REQUEST).json({ message: "Token is required" });
+    }
+
+    try {
+        const user = await User.findOne({ token: token });
+        if (!user) {
+            return res.status(httpStatus.NOT_FOUND).json({ message: "User not found" });
+        }
+
+        res.status(httpStatus.OK).json({ name: user.name, username: user.username });
+    } catch (e) {
+        console.error("Get User Details Error:", e);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Error fetching user details: ${e.message}` });
+    }
+}
+
+export { login, register, getUserHistory, addToHistory, googleAuth, getUserDetails }

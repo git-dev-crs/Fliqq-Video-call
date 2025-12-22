@@ -1,6 +1,6 @@
 // export const BASE_URL = "http://localhost:5000"; 
 // export const SOCKET_URL = "http://localhost:5000"; 
-let IS_PROD = true;
+let IS_PROD = false;
 const server = IS_PROD ?
     "https://apnacollegebackend.onrender.com" :
 
