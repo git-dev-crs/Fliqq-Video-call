@@ -53,7 +53,6 @@ function Dashboard() {
     }
 
 
-
     if (loading) {
         return (
             <Box sx={{
@@ -62,25 +61,53 @@ function Dashboard() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bgcolor: '#ffffff'
+                bgcolor: '#ffffff',
+                position: 'relative'
             }}>
-                <Box sx={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: '50%',
-                    border: '3px solid transparent',
-                    borderTopColor: '#a855f7',
-                    borderRightColor: '#a855f7',
-                    animation: 'spin 1s linear infinite'
-                }} />
-                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1rem' }}>
+                {/* Creative Sonar Ripple Animation */}
+                <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite'
+                    }} />
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite',
+                        animationDelay: '0.75s'
+                    }} />
+                    <Box sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        zIndex: 1
+                    }} />
+                </Box>
+
+                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1.1rem', fontWeight: 500, letterSpacing: '0.5px' }}>
                     {loadingMessage}
                 </Typography>
                 <style>
                     {`
-                        @keyframes spin {
-                            0% { transform: rotate(0deg); }
-                            100% { transform: rotate(360deg); }
+                        @keyframes ripple {
+                            0% {
+                                transform: scale(1);
+                                opacity: 0.7;
+                            }
+                            100% {
+                                transform: scale(4);
+                                opacity: 0;
+                            }
                         }
                     `}
                 </style>
@@ -152,7 +179,7 @@ function Dashboard() {
                             <Button
                                 onClick={() => {
                                     localStorage.removeItem("token")
-                                    navigate("/auth")
+                                    navigate("/")
                                 }}
                                 variant="outlined"
                                 sx={{
