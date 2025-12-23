@@ -334,11 +334,10 @@ export default function Authentication() {
 
             <Snackbar
                 open={open}
-                autoHideDuration={4000}
                 onClose={() => setOpen(false)}
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-                <Alert onClose={() => setOpen(false)} severity="success" variant="filled" sx={{ width: '100%' }}>
+                <Alert onClose={() => setOpen(false)} severity="success" variant="filled" sx={{ width: '100%', bgcolor: '#4caf50' }}>
                     {message}
                 </Alert>
             </Snackbar>
