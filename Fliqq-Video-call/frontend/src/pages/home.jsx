@@ -14,6 +14,14 @@ function Dashboard() {
     const { getUserDetails } = useContext(AuthContext);
     const [meetingCode, setMeetingCode] = useState("");
     const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleRefresh = () => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 2000);
+    }
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -33,12 +41,48 @@ function Dashboard() {
         }
     }
 
+
+
+    if (loading) {
+        return (
+            <Box sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#ffffff'
+            }}>
+                <Box sx={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: '50%',
+                    border: '3px solid transparent',
+                    borderTopColor: '#a855f7',
+                    borderRightColor: '#a855f7',
+                    animation: 'spin 1s linear infinite'
+                }} />
+                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1rem' }}>
+                    Loading...
+                </Typography>
+                <style>
+                    {`
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    `}
+                </style>
+            </Box>
+        )
+    }
+
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
             <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 1 }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate("/")}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={handleRefresh}>
                             <Box
                                 component="img"
                                 src="/fliq_logo_white.png"
@@ -61,7 +105,7 @@ function Dashboard() {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                             <Button
                                 startIcon={<HomeIcon sx={{ color: '#b588d9' }} />}
-                                onClick={() => navigate("/home")}
+                                onClick={handleRefresh}
                                 sx={{
                                     color: '#111827',
                                     textTransform: 'none',
