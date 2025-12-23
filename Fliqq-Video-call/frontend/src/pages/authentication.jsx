@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthContext } from '../contexts/AuthContext';
-import { Snackbar, Container } from '@mui/material';
+import { Snackbar, Container, Alert } from '@mui/material';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +22,14 @@ export default function Authentication() {
     const [message, setMessage] = React.useState("");
     const [formState, setFormState] = React.useState(0); // 0: Login, 1: Register
     const [open, setOpen] = React.useState(false);
+    const [isAuthenticating, setIsAuthenticating] = React.useState(false);
 
     const { handleRegister, handleLogin, handleGoogleLogin } = React.useContext(AuthContext);
     const router = useNavigate();
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
+            setIsAuthenticating(true);
             try {
                 const userInfo = await axios.get(
                     'https://www.googleapis.com/oauth2/v3/userinfo',
@@ -38,12 +40,14 @@ export default function Authentication() {
             } catch (err) {
                 console.log(err);
                 setError("Google Login Failed");
+                setIsAuthenticating(false);
             }
         },
         onError: errorResponse => console.log(errorResponse),
     });
 
     const handleAuth = async () => {
+        setIsAuthenticating(true);
         try {
             if (formState === 0) {
                 await handleLogin(username, password);
@@ -54,17 +58,52 @@ export default function Authentication() {
                 setUsername("");
                 setName("");
                 setPassword("");
-                setMessage(result);
+                setMessage("User registered successfully. Please Login!");
                 setOpen(true);
                 setError("");
                 setFormState(0); // Switch to login after success
+                setIsAuthenticating(false);
             }
         } catch (err) {
             console.log(err);
             let message = (err.response?.data?.message) || "An error occurred";
             setError(message);
-            // setOpen(true); // Optional: show error in snackbar too?
+            setIsAuthenticating(false);
         }
+    }
+
+    if (isAuthenticating) {
+        return (
+            <Box sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: 'white',
+            }}>
+                <style>
+                    {`
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    `}
+                </style>
+                <Box sx={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: '50%',
+                    border: '4px solid #a855f7', // Purple-500
+                    borderBottomColor: 'transparent',
+                    animation: 'spin 1s linear infinite',
+                    mb: 4
+                }} />
+                <Typography variant="h5" sx={{ color: '#374151', fontFamily: '"Segoe UI", sans-serif', fontWeight: 400 }}>
+                    Authenticating...
+                </Typography>
+            </Box>
+        );
     }
 
     return (
@@ -297,8 +336,12 @@ export default function Authentication() {
                 open={open}
                 autoHideDuration={4000}
                 onClose={() => setOpen(false)}
-                message={message}
-            />
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert onClose={() => setOpen(false)} severity="success" variant="filled" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </ThemeProvider>
     );
 }
