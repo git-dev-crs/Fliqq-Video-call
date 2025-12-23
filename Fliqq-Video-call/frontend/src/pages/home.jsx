@@ -15,11 +15,22 @@ function Dashboard() {
     const [meetingCode, setMeetingCode] = useState("");
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState("Loading...");
 
     const handleRefresh = () => {
+        setLoadingMessage("Loading...");
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
+        }, 2000);
+    }
+
+    const handleHistoryNavigation = () => {
+        setLoadingMessage("Loading Meeting History...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/history");
         }, 2000);
     }
 
@@ -63,7 +74,7 @@ function Dashboard() {
                     animation: 'spin 1s linear infinite'
                 }} />
                 <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1rem' }}>
-                    Loading...
+                    {loadingMessage}
                 </Typography>
                 <style>
                     {`
@@ -119,7 +130,7 @@ function Dashboard() {
 
                             <Button
                                 startIcon={<RestoreIcon sx={{ color: '#b588d9' }} />}
-                                onClick={() => navigate("/history")}
+                                onClick={handleHistoryNavigation}
                                 sx={{
                                     color: '#111827',
                                     textTransform: 'none',
