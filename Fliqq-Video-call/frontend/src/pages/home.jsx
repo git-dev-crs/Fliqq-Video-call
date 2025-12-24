@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Box, Typography, Container, AppBar, Toolbar, Paper, IconButton } from '@mui/material';
-import RestoreIcon from '@mui/icons-material/Restore';
-import LogoutIcon from '@mui/icons-material/Logout';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
+import { Button, TextField, Box, Typography, Container, Paper } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
 import withAuth from '../utils/withAuth';
+import Header from '../components/Header';
 
 
 function Dashboard() {
@@ -30,7 +27,15 @@ function Dashboard() {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            navigate("/history");
+        }, 2000);
+    }
+
+    const handleProfileNavigation = () => {
+        setLoadingMessage("Loading Profile...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/profile");
         }, 2000);
     }
 
@@ -117,92 +122,12 @@ function Dashboard() {
 
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
-            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 1 }}>
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={handleRefresh}>
-                            <Box
-                                component="img"
-                                src="/fliq_logo_white.png"
-                                alt="Fliqq Logo"
-                                sx={{ height: 40, width: 'auto' }}
-                            />
-                            <Typography
-                                component="h1"
-                                sx={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: 800,
-                                    color: '#b588d9',
-                                    fontFamily: 'Poppins, sans-serif'
-                                }}
-                            >
-                                Fliqq
-                            </Typography>
-                        </Box>
-
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                            <Button
-                                startIcon={<HomeIcon sx={{ color: '#b588d9' }} />}
-                                onClick={handleRefresh}
-                                sx={{
-                                    color: '#111827',
-                                    textTransform: 'none',
-                                    fontWeight: 500,
-                                    fontSize: '0.95rem',
-                                    '&:hover': { bgcolor: '#f3f4f6' }
-                                }}
-                            >
-                                Home
-                            </Button>
-
-                            <Button
-                                startIcon={<RestoreIcon sx={{ color: '#b588d9' }} />}
-                                onClick={handleHistoryNavigation}
-                                sx={{
-                                    color: '#111827',
-                                    textTransform: 'none',
-                                    fontWeight: 500,
-                                    fontSize: '0.95rem',
-                                    '&:hover': { bgcolor: '#f3f4f6' }
-                                }}
-                            >
-                                History
-                            </Button>
-
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <PersonIcon sx={{ color: '#b588d9' }} />
-                                <Typography sx={{ color: '#111827', fontWeight: 500, fontSize: '0.95rem' }}>
-                                    {userData?.username || userData?.name || "User"}
-                                </Typography>
-                            </Box>
-
-                            <Button
-                                onClick={() => {
-                                    localStorage.removeItem("token")
-                                    navigate("/")
-                                }}
-                                variant="outlined"
-                                sx={{
-                                    color: '#b588d9',
-                                    borderColor: '#b588d9',
-                                    textTransform: 'none',
-                                    fontWeight: 500,
-                                    px: 1.5,
-                                    py: 0.5,
-                                    borderRadius: 2,
-                                    '&:hover': {
-                                        bgcolor: '#fdf4ff',
-                                        borderColor: '#9c27b0',
-                                        color: '#9c27b0'
-                                    }
-                                }}
-                            >
-                                Logout
-                            </Button>
-                        </Box>
-                    </Toolbar>
-                </Container>
-            </AppBar>
+            <Header
+                handleRefresh={handleRefresh}
+                handleHistoryNavigation={handleHistoryNavigation}
+                handleProfileNavigation={handleProfileNavigation}
+                userData={userData}
+            />
 
             <Container maxWidth="md" sx={{ mt: { xs: 4, md: 10 }, display: 'flex', justifyContent: 'center', px: 3 }}>
                 <Paper

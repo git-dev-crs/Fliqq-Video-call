@@ -14,19 +14,34 @@ import {
     AccordionSummary,
     AccordionDetails,
     Divider,
-    Button,
     Paper
 } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
+import Header from '../components/Header';
 
 export default function History() {
-    const { getHistoryOfUser } = useContext(AuthContext);
+    const { getHistoryOfUser, getUserDetails } = useContext(AuthContext);
     const [meetings, setMeetings] = useState([]);
+    const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+
+    const handleRefresh = () => navigate("/home");
+    const handleHistoryNavigation = () => { }; // Already on history
+    const handleProfileNavigation = () => navigate("/profile");
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const details = await getUserDetails(token);
+                setUserData(details);
+            }
+        }
+        fetchUser();
+    }, [getUserDetails]);
 
     useEffect(() => {
         const fetchHistory = async () => {
@@ -50,46 +65,12 @@ export default function History() {
 
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb' }}>
-            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 2 }}>
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate("/home")}>
-                            <Box
-                                component="img"
-                                src="/fliq_logo_white.png"
-                                alt="Fliqq Logo"
-                                sx={{ height: 40, width: 'auto' }}
-                            />
-                            <Typography
-                                component="h1"
-                                sx={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: 800,
-                                    color: '#b588d9'
-                                }}
-                            >
-                                Fliqq
-                            </Typography>
-                        </Box>
-
-                        <Button
-                            startIcon={<HomeIcon />}
-                            onClick={() => navigate("/home")}
-                            sx={{
-                                color: '#9c27b0',
-                                bgcolor: '#f3e8ff',
-                                textTransform: 'none',
-                                fontWeight: 600,
-                                px: 2,
-                                borderRadius: 2,
-                                '&:hover': { bgcolor: '#e9d5ff' }
-                            }}
-                        >
-                            Back to Home
-                        </Button>
-                    </Toolbar>
-                </Container>
-            </AppBar>
+            <Header
+                handleRefresh={handleRefresh}
+                handleHistoryNavigation={handleHistoryNavigation}
+                handleProfileNavigation={handleProfileNavigation}
+                userData={userData}
+            />
 
             <Container maxWidth="md" sx={{ mt: 8, pb: 8 }}>
                 <Box sx={{ textAlign: 'center', mb: 6 }}>
