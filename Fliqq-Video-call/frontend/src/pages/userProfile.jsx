@@ -4,6 +4,7 @@ import { Box, Typography, Container, Paper, TextField, Button, Avatar, Grid, Ico
 import EditIcon from '@mui/icons-material/Edit';
 import { AuthContext } from '../contexts/AuthContext';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import withAuth from '../utils/withAuth';
 
 function UserProfile() {
@@ -12,6 +13,22 @@ function UserProfile() {
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState("Loading...");
     const [isEditing, setIsEditing] = useState(false);
+    const [editingBio, setEditingBio] = useState(false);
+
+    const [fileName, setFileName] = useState("No file chosen");
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setFileName(file.name);
+            // Create preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUserData(prev => ({ ...prev, photoUrl: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     // Initial State
     const [userData, setUserData] = useState({
@@ -108,6 +125,7 @@ function UserProfile() {
                     elevation={0}
                     sx={{
                         p: { xs: 4, md: 6 },
+                        pb: { xs: 4, md: 2 }, // Reduced bottom padding
                         borderRadius: 6,
                         bgcolor: 'white',
                         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
@@ -123,19 +141,47 @@ function UserProfile() {
                                 >
                                     {userData.name ? userData.name.charAt(0).toUpperCase() : 'U'}
                                 </Avatar>
-                                <IconButton
-                                    sx={{
-                                        position: 'absolute',
-                                        bottom: 0,
-                                        right: 0,
-                                        bgcolor: 'white',
-                                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                                        '&:hover': { bgcolor: '#f9fafb' }
-                                    }}
-                                >
-                                    <EditIcon sx={{ color: '#6b7280' }} />
-                                </IconButton>
                             </Box>
+
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, mb: 3 }}>
+                                <label htmlFor="photo-upload" style={{ cursor: 'pointer', display: 'block' }}>
+                                    <Typography variant="body1" sx={{ color: '#111827', fontWeight: 500, '&:hover': { color: '#9c27b0' } }}>
+                                        Change Photo
+                                    </Typography>
+                                </label>
+
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                                    <input
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                        id="photo-upload"
+                                        type="file"
+                                        onChange={handleFileChange}
+                                    />
+                                    <label htmlFor="photo-upload">
+                                        <Typography
+                                            component="span"
+                                            sx={{
+                                                bgcolor: '#f3e8ff',
+                                                color: '#9c27b0',
+                                                py: 1,
+                                                px: 2,
+                                                borderRadius: 2,
+                                                fontWeight: 600,
+                                                fontSize: '0.9rem',
+                                                cursor: 'pointer',
+                                                '&:hover': { bgcolor: '#e9d5ff' }
+                                            }}
+                                        >
+                                            Choose File
+                                        </Typography>
+                                    </label>
+                                    <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                                        {fileName}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
                             <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 0.5 }}>
                                 {userData.name || "User Name"}
                             </Typography>
@@ -177,29 +223,73 @@ function UserProfile() {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        label="Username"
-                                        name="username"
-                                        value={userData.username}
+                                        label="Email / Username"
+                                        value={userData.email || userData.username}
                                         fullWidth
-                                        disabled={true} // Usually username/email is not editable
+                                        disabled
                                         variant="outlined"
-                                        InputLabelProps={{ shrink: true }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            sx: {
+                                                bgcolor: 'white',
+                                                px: 1,
+                                                color: '#6b7280'
+                                            }
+                                        }}
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                bgcolor: '#e2e8f0',
+                                                borderRadius: 2,
+                                                '& fieldset': { border: 'none' },
+                                                '&.Mui-disabled': { bgcolor: '#e2e8f0' } // Ensure disabled state keeps color
+                                            },
+                                            '& .MuiInputBase-input': {
+                                                color: '#334155',
+                                                WebkitTextFillColor: '#334155',
+                                                fontWeight: 500,
+                                                // Explicitly match standard outlined padding if needed, though default usually works
+                                            }
+                                        }}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        label="Bio"
-                                        name="bio"
-                                        value={userData.bio}
-                                        onChange={handleChange}
-                                        fullWidth
-                                        multiline
-                                        rows={3}
-                                        disabled={!isEditing}
-                                        variant="outlined"
-                                        InputLabelProps={{ shrink: true }}
-                                        sx={{ '& .MuiOutlinedInput-root.Mui-focused fieldset': { borderColor: '#b588d9' }, '& .MuiInputLabel-root.Mui-focused': { color: '#b588d9' } }}
-                                    />
+                                    <Typography variant="body2" sx={{ color: '#111827', fontWeight: 600, mb: 1, ml: 1 }}>
+                                        Bio
+                                    </Typography>
+                                    {!editingBio ? (
+                                        <Box
+                                            onClick={() => setEditingBio(true)}
+                                            sx={{
+                                                p: 2,
+                                                cursor: 'pointer',
+                                                borderRadius: 2,
+                                                '&:hover': { bgcolor: '#f9fafb' }
+                                            }}
+                                        >
+                                            <Typography variant="body1" sx={{ color: userData.bio ? '#374151' : '#9ca3af' }}>
+                                                {userData.bio || "Click to add bio"}
+                                            </Typography>
+                                        </Box>
+                                    ) : (
+                                        <TextField
+                                            name="bio"
+                                            value={userData.bio}
+                                            onChange={handleChange}
+                                            autoFocus
+                                            onBlur={() => setEditingBio(false)}
+                                            fullWidth
+                                            multiline
+                                            rows={3}
+                                            variant="outlined"
+                                            placeholder="Tell us about yourself"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    bgcolor: 'white',
+                                                    '&.Mui-focused fieldset': { borderColor: '#b588d9' }
+                                                }
+                                            }}
+                                        />
+                                    )}
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
@@ -244,7 +334,8 @@ function UserProfile() {
                     </Grid>
                 </Paper>
             </Container>
-        </Box>
+            <Footer />
+        </Box >
     );
 }
 

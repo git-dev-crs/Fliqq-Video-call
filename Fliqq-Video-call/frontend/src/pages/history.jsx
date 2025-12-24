@@ -21,6 +21,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function History() {
     const { getHistoryOfUser, getUserDetails } = useContext(AuthContext);
@@ -64,7 +65,7 @@ export default function History() {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb' }}>
+        <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
             <Header
                 handleRefresh={handleRefresh}
                 handleHistoryNavigation={handleHistoryNavigation}
@@ -175,6 +176,7 @@ export default function History() {
                     </Box>
                 )}
             </Container>
+            <Footer />
         </Box>
     );
 }
