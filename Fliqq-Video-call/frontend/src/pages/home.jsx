@@ -28,16 +28,12 @@ function Dashboard() {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
+            navigate("/history");
         }, 2000);
     }
 
     const handleProfileNavigation = () => {
-        setLoadingMessage("Loading Profile...");
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            navigate("/profile");
-        }, 2000);
+        navigate("/profile");
     }
 
     useEffect(() => {
