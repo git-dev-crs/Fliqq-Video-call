@@ -80,28 +80,56 @@ export default function Authentication() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bgcolor: 'white',
+                bgcolor: '#ffffff',
+                position: 'relative'
             }}>
+                {/* Creative Sonar Ripple Animation */}
+                <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite'
+                    }} />
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite',
+                        animationDelay: '0.75s'
+                    }} />
+                    <Box sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        zIndex: 1
+                    }} />
+                </Box>
+
+                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1.1rem', fontWeight: 500, letterSpacing: '0.5px' }}>
+                    Authenticating...
+                </Typography>
                 <style>
                     {`
-                        @keyframes spin {
-                            0% { transform: rotate(0deg); }
-                            100% { transform: rotate(360deg); }
+                        @keyframes ripple {
+                            0% {
+                                transform: scale(1);
+                                opacity: 0.7;
+                            }
+                            100% {
+                                transform: scale(4);
+                                opacity: 0;
+                            }
                         }
                     `}
                 </style>
-                <Box sx={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: '50%',
-                    border: '4px solid #a855f7', // Purple-500
-                    borderBottomColor: 'transparent',
-                    animation: 'spin 1s linear infinite',
-                    mb: 4
-                }} />
-                <Typography variant="h5" sx={{ color: '#374151', fontFamily: '"Segoe UI", sans-serif', fontWeight: 400 }}>
-                    Authenticating...
-                </Typography>
             </Box>
         );
     }
