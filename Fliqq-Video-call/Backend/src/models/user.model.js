@@ -7,7 +7,10 @@ const userSchema = new Schema(
         username: { type: String, required: true, unique: true },
         password: { type: String, required: false },
         email: { type: String, required: false },
-        token: { type: String }
+        token: { type: String },
+        bio: { type: String, default: "" },
+        location: { type: String, default: "" },
+        photoUrl: { type: String, default: "" }
     }
 )
 
