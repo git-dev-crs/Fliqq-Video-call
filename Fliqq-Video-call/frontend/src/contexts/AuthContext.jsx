@@ -115,8 +115,17 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const updateUserProfile = async (data) => {
+        try {
+            let request = await client.post("/update_user_details", data);
+            return request.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+
     const data = {
-        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin, handleGoogleLogin, getUserDetails
+        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin, handleGoogleLogin, getUserDetails, updateUserProfile
     }
 
     return (
