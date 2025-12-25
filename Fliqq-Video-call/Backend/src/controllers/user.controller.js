@@ -170,11 +170,45 @@ const getUserDetails = async (req, res) => {
             return res.status(httpStatus.NOT_FOUND).json({ message: "User not found" });
         }
 
-        res.status(httpStatus.OK).json({ name: user.name, username: user.username });
+        res.status(httpStatus.OK).json({
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            location: user.location,
+            photoUrl: user.photoUrl
+        });
     } catch (e) {
         console.error("Get User Details Error:", e);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Error fetching user details: ${e.message}` });
     }
 }
 
-export { login, register, getUserHistory, addToHistory, googleAuth, getUserDetails }
+const updateUserDetails = async (req, res) => {
+    const { token, name, bio, location, photoUrl } = req.body;
+
+    if (!token) {
+        return res.status(httpStatus.BAD_REQUEST).json({ message: "Token is required" });
+    }
+
+    try {
+        const user = await User.findOne({ token: token });
+        if (!user) {
+            return res.status(httpStatus.NOT_FOUND).json({ message: "User not found" });
+        }
+
+        if (name) user.name = name;
+        if (bio !== undefined) user.bio = bio;
+        if (location !== undefined) user.location = location;
+        if (photoUrl !== undefined) user.photoUrl = photoUrl;
+
+        await user.save();
+
+        res.status(httpStatus.OK).json({ message: "User details updated successfully" });
+    } catch (e) {
+        console.error("Update User Details Error:", e);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Error updating user details: ${e.message}` });
+    }
+}
+
+export { login, register, getUserHistory, addToHistory, googleAuth, getUserDetails, updateUserDetails }
