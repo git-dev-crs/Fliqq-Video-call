@@ -16,11 +16,12 @@ function Dashboard() {
     const [loadingMessage, setLoadingMessage] = useState("Loading...");
 
     const handleRefresh = () => {
-        setLoadingMessage("Loading...");
+        setLoadingMessage("Taking you to Home...");
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-        }, 2000);
+            navigate("/");
+        }, 1500);
     }
 
     const handleHistoryNavigation = () => {
