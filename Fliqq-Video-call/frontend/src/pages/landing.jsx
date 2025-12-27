@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import {
     AppBar,
@@ -21,6 +23,35 @@ export default function LandingPage() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { getUserDetails } = useContext(AuthContext);
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                try {
+                    const details = await getUserDetails(token);
+                    setUserData(details);
+                } catch (e) {
+                    console.error("Failed to fetch user on landing", e);
+                }
+            }
+        }
+        fetchUser();
+    }, [getUserDetails]);
+
+    const handleRefresh = () => {
+        router("/home");
+    }
+
+    const handleHistoryNavigation = () => {
+        router("/history");
+    }
+
+    const handleProfileNavigation = () => {
+        router("/profile");
+    }
 
     return (
         <Box sx={{
@@ -29,147 +60,156 @@ export default function LandingPage() {
             display: 'flex',
             flexDirection: 'column'
         }}>
-            <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)', py: '0.5rem', px: '1rem' }}>
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}>
+            {userData ? (
+                <Header
+                    handleRefresh={handleRefresh}
+                    handleHistoryNavigation={handleHistoryNavigation}
+                    handleProfileNavigation={handleProfileNavigation}
+                    userData={userData}
+                />
+            ) : (
+                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)', py: '0.5rem', px: '1rem' }}>
+                    <Container maxWidth="xl">
+                        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}>
+                                <Box
+                                    component="img"
+                                    src="/fliq_logo_white.png"
+                                    alt="Logo"
+                                    sx={{ height: 40, width: 'auto' }}
+                                />
+                                <Typography
+                                    component="h1"
+                                    sx={{
+                                        fontSize: '1.5rem',
+                                        fontWeight: 800,
+                                        color: '#b588d9',
+                                        fontFamily: 'Poppins, sans-serif'
+                                    }}
+                                >
+                                    Fliqq
+                                </Typography>
+                            </Box>
+
+                            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 2 }}>
+                                <Button
+                                    onClick={() => router("/auth")}
+                                    sx={{
+                                        px: 2,
+                                        py: 1,
+                                        color: '#b588d9',
+                                        border: '1px solid #b588d9',
+                                        borderRadius: '8px',
+                                        textTransform: 'none',
+                                        transition: 'all 0.3s',
+                                        '&:hover': {
+                                            bgcolor: '#f3e8ff',
+                                            cursor: 'pointer'
+                                        }
+                                    }}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Button
+                                    onClick={() => router("/auth")}
+                                    sx={{
+                                        px: 2,
+                                        py: 1,
+                                        color: 'white',
+                                        bgcolor: '#099be4ff',
+                                        borderRadius: '8px',
+                                        textTransform: 'none',
+                                        boxShadow: 'none',
+                                        transition: 'all 0.3s',
+                                        '&:hover': {
+                                            bgcolor: '#38BDF8',
+                                            cursor: 'pointer',
+                                            boxShadow: 'none'
+                                        }
+                                    }}
+                                >
+                                    Login
+                                </Button>
+                            </Box>
+
+                            {/* Mobile Menu Button */}
+                            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                                <IconButton
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    sx={{
+                                        color: '#9c27b0'
+                                    }}
+                                >
+                                    {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+                                </IconButton>
+                            </Box>
+                        </Toolbar>
+
+                        {/* Mobile Menu - Inside Container, Right-Aligned */}
+                        {mobileMenuOpen && (
                             <Box
-                                component="img"
-                                src="/fliq_logo_white.png"
-                                alt="Logo"
-                                sx={{ height: 40, width: 'auto' }}
-                            />
-                            <Typography
-                                component="h1"
                                 sx={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: 800,
-                                    color: '#b588d9',
-                                    fontFamily: 'Poppins, sans-serif'
+                                    display: { xs: 'flex', md: 'none' },
+                                    flexDirection: 'column',
+                                    gap: 1.5,
+                                    mt: 2,
+                                    justifyContent: 'center',
+                                    alignItems: 'flex-end',
+                                    pr: 2,
+                                    transition: 'all 0.3s ease-in-out'
                                 }}
                             >
-                                Fliqq
-                            </Typography>
-                        </Box>
-
-                        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 2 }}>
-                            <Button
-                                onClick={() => router("/auth")}
-                                sx={{
-                                    px: 2,
-                                    py: 1,
-                                    color: '#b588d9',
-                                    border: '1px solid #b588d9',
-                                    borderRadius: '8px',
-                                    textTransform: 'none',
-                                    transition: 'all 0.3s',
-                                    '&:hover': {
-                                        bgcolor: '#f3e8ff',
-                                        cursor: 'pointer'
-                                    }
-                                }}
-                            >
-                                Sign Up
-                            </Button>
-                            <Button
-                                onClick={() => router("/auth")}
-                                sx={{
-                                    px: 2,
-                                    py: 1,
-                                    color: 'white',
-                                    bgcolor: '#099be4ff',
-                                    borderRadius: '8px',
-                                    textTransform: 'none',
-                                    boxShadow: 'none',
-                                    transition: 'all 0.3s',
-                                    '&:hover': {
-                                        bgcolor: '#38BDF8',
-                                        cursor: 'pointer',
-                                        boxShadow: 'none'
-                                    }
-                                }}
-                            >
-                                Login
-                            </Button>
-                        </Box>
-
-                        {/* Mobile Menu Button */}
-                        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                sx={{
-                                    color: '#9c27b0'
-                                }}
-                            >
-                                {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
-                            </IconButton>
-                        </Box>
-                    </Toolbar>
-
-                    {/* Mobile Menu - Inside Container, Right-Aligned */}
-                    {mobileMenuOpen && (
-                        <Box
-                            sx={{
-                                display: { xs: 'flex', md: 'none' },
-                                flexDirection: 'column',
-                                gap: 1.5,
-                                mt: 2,
-                                justifyContent: 'center',
-                                alignItems: 'flex-end',
-                                pr: 2,
-                                transition: 'all 0.3s ease-in-out'
-                            }}
-                        >
-                            <Button
-                                onClick={() => {
-                                    router("/auth");
-                                    setMobileMenuOpen(false);
-                                }}
-                                sx={{
-                                    width: 'auto',
-                                    px: 2,
-                                    py: 1,
-                                    color: '#b588d9',
-                                    border: '1px solid #b588d9',
-                                    borderRadius: '8px',
-                                    textTransform: 'none',
-                                    transition: 'all 0.3s',
-                                    '&:hover': {
-                                        bgcolor: '#f3e8ff',
-                                        cursor: 'pointer'
-                                    }
-                                }}
-                            >
-                                Sign Up
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    router("/auth");
-                                    setMobileMenuOpen(false);
-                                }}
-                                sx={{
-                                    width: 'auto',
-                                    px: 2,
-                                    py: 1,
-                                    color: 'white',
-                                    bgcolor: '#0284C7',
-                                    borderRadius: '8px',
-                                    textTransform: 'none',
-                                    boxShadow: 'none',
-                                    transition: 'all 0.3s',
-                                    '&:hover': {
-                                        bgcolor: '#38BDF8',
-                                        cursor: 'pointer',
-                                        boxShadow: 'none'
-                                    }
-                                }}
-                            >
-                                Login
-                            </Button>
-                        </Box>
-                    )}
-                </Container>
-            </AppBar>
+                                <Button
+                                    onClick={() => {
+                                        router("/auth");
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    sx={{
+                                        width: 'auto',
+                                        px: 2,
+                                        py: 1,
+                                        color: '#b588d9',
+                                        border: '1px solid #b588d9',
+                                        borderRadius: '8px',
+                                        textTransform: 'none',
+                                        transition: 'all 0.3s',
+                                        '&:hover': {
+                                            bgcolor: '#f3e8ff',
+                                            cursor: 'pointer'
+                                        }
+                                    }}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        router("/auth");
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    sx={{
+                                        width: 'auto',
+                                        px: 2,
+                                        py: 1,
+                                        color: 'white',
+                                        bgcolor: '#0284C7',
+                                        borderRadius: '8px',
+                                        textTransform: 'none',
+                                        boxShadow: 'none',
+                                        transition: 'all 0.3s',
+                                        '&:hover': {
+                                            bgcolor: '#38BDF8',
+                                            cursor: 'pointer',
+                                            boxShadow: 'none'
+                                        }
+                                    }}
+                                >
+                                    Login
+                                </Button>
+                            </Box>
+                        )}
+                    </Container>
+                </AppBar>
+            )}
 
 
             <Box
