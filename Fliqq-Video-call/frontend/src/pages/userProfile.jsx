@@ -48,12 +48,12 @@ function UserProfile() {
 
     // Loading handlers reused from Home
     const handleRefresh = () => {
-        setLoadingMessage("Loading...");
+        setLoadingMessage("Taking you to Home...");
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            navigate("/home");
-        }, 2000);
+            navigate("/");
+        }, 1500);
     }
 
     const handleHistoryNavigation = () => {
