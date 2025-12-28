@@ -24,6 +24,15 @@ function Dashboard() {
         }, 1500);
     }
 
+    const handleHomeNavigation = () => {
+        setLoadingMessage("Loading...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/home");
+        }, 1500);
+    }
+
     const handleHistoryNavigation = () => {
         setLoadingMessage("Loading Meeting History...");
         setLoading(true);
@@ -122,6 +131,7 @@ function Dashboard() {
         <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
             <Header
                 handleRefresh={handleRefresh}
+                handleHomeNavigation={handleHomeNavigation}
                 handleHistoryNavigation={handleHistoryNavigation}
                 handleProfileNavigation={handleProfileNavigation}
                 userData={userData}
@@ -216,7 +226,12 @@ function Dashboard() {
                             }}
                             onClick={() => {
                                 const randomCode = Math.random().toString(36).substring(2, 7);
-                                setMeetingCode(randomCode);
+                                setLoadingMessage("Creating Meeting...");
+                                setLoading(true);
+                                setTimeout(() => {
+                                    setLoading(false);
+                                    navigate("/lobby", { state: { meetingCode: randomCode } });
+                                }, 3000);
                             }}
                         >
                             ✨ Create New Meeting
