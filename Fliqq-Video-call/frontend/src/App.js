@@ -8,6 +8,7 @@ import HomeComponent from './pages/home';
 import History from './pages/history';
 import UserProfile from './pages/userProfile';
 import GuestLobby from './pages/guestLobby';
+import MeetingLobby from './pages/meetingLobby';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/history' element={<History />} />
             <Route path='/guest' element={<GuestLobby />} />
             <Route path='/profile' element={<UserProfile />} />
+            <Route path='/lobby' element={<MeetingLobby />} />
             <Route path='/:url' element={<VideoMeetComponent />} />
           </Routes>
         </AuthProvider>
