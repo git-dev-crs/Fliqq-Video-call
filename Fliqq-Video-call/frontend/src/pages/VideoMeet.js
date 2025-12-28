@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import io from "socket.io-client";
-import { Badge, IconButton, TextField } from '@mui/material';
+import { Badge, IconButton, TextField, Box, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff'
@@ -51,7 +51,8 @@ export default function VideoMeetComponent() {
 
     let [message, setMessage] = useState("");
 
-    let [newMessages, setNewMessages] = useState(3);
+    let [newMessages, setNewMessages] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     let [username, setUsername] = useState(location.state?.username || "");
 
@@ -424,7 +425,10 @@ export default function VideoMeetComponent() {
             let tracks = localVideoref.current.srcObject.getTracks()
             tracks.forEach(track => track.stop())
         } catch (e) { }
-        window.location.href = "/"
+        setLoading(true);
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 2000);
     }
 
     let openChat = () => {
@@ -478,6 +482,60 @@ export default function VideoMeetComponent() {
         getMedia();
     }
 
+
+    if (loading) {
+        return (
+            <Box sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#ffffff',
+                position: 'relative'
+            }}>
+                <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#ef4444', // Red for ending call
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite'
+                    }} />
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#ef4444',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite',
+                        animationDelay: '0.75s'
+                    }} />
+                    <Box sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        bgcolor: '#ef4444',
+                        zIndex: 1
+                    }} />
+                </Box>
+                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1.1rem', fontWeight: 500, letterSpacing: '0.5px' }}>
+                    Ending Call...
+                </Typography>
+                <style>
+                    {`
+                        @keyframes ripple {
+                            0% { transform: scale(1); opacity: 0.7; }
+                            100% { transform: scale(4); opacity: 0; }
+                        }
+                    `}
+                </style>
+            </Box>
+        )
+    }
 
     if (askForUsername) {
         return (
