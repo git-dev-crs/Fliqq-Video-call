@@ -5,14 +5,14 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 
-const Header = ({ handleRefresh, handleHistoryNavigation, handleProfileNavigation, userData }) => {
+const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, handleProfileNavigation, userData }) => {
     const navigate = useNavigate();
 
     return (
         <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 1 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                    {/* Logo Section - Navigates to Home/Refresh */}
+                    {/* Logo Section - Navigates to Landing Page */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={handleRefresh}>
                         <Box
                             component="img"
@@ -37,7 +37,7 @@ const Header = ({ handleRefresh, handleHistoryNavigation, handleProfileNavigatio
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                         <Button
                             startIcon={<HomeIcon sx={{ color: '#b588d9' }} />}
-                            onClick={handleRefresh}
+                            onClick={handleHomeNavigation}
                             sx={{
                                 color: '#111827',
                                 textTransform: 'none',
