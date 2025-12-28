@@ -42,8 +42,14 @@ export default function LandingPage() {
     }, [getUserDetails]);
 
     const handleRefresh = () => {
+        router("/");
+    }
+
+    const handleHomeNavigation = () => {
         router("/home");
     }
+
+
 
     const handleHistoryNavigation = () => {
         router("/history");
@@ -63,12 +69,13 @@ export default function LandingPage() {
             {userData ? (
                 <Header
                     handleRefresh={handleRefresh}
+                    handleHomeNavigation={handleHomeNavigation}
                     handleHistoryNavigation={handleHistoryNavigation}
                     handleProfileNavigation={handleProfileNavigation}
                     userData={userData}
                 />
             ) : (
-                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)', py: '0.5rem', px: '1rem' }}>
+                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.7)', py: '0.5rem', px: '1rem' }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}>
@@ -219,10 +226,10 @@ export default function LandingPage() {
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: 'center',
                     justifyContent: 'center',
-                    minHeight: '60vh',
+                    minHeight: '70vh',
                     px: 3,
-                    py: 5,
-                    gap: 4,
+                    py: 8,
+                    gap: 6,
                     bgcolor: '#f9fafb'
                 }}
             >
@@ -706,7 +713,7 @@ export default function LandingPage() {
                 </Container>
             </Box>
 
-            <Box component="footer" sx={{ py: 4, textAlign: 'center', bgcolor: 'white', boxShadow: 'rgba(0, 0, 0, 0.05) 0px -4px 10px' }}>
+            <Box component="footer" sx={{ py: 2, textAlign: 'center', bgcolor: 'white', boxShadow: 'rgba(0, 0, 0, 0.05) 0px -4px 10px' }}>
                 <Typography variant="body2" sx={{ color: '#4b5563', fontSize: '0.875rem' }}>
                     © 2025 Fliqq. All rights reserved.
                 </Typography>
