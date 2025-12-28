@@ -56,6 +56,15 @@ function UserProfile() {
         }, 1500);
     }
 
+    const handleHomeNavigation = () => {
+        setLoadingMessage("Loading...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/home");
+        }, 1500);
+    }
+
     const handleHistoryNavigation = () => {
         setLoadingMessage("Loading Meeting History...");
         setLoading(true);
@@ -210,6 +219,7 @@ function UserProfile() {
             )}
             <Header
                 handleRefresh={handleRefresh}
+                handleHomeNavigation={handleHomeNavigation}
                 handleHistoryNavigation={handleHistoryNavigation}
                 handleProfileNavigation={handleProfileNavigation}
                 userData={userData}
