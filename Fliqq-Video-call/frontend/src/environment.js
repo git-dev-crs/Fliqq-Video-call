@@ -4,7 +4,7 @@ let IS_PROD = false;
 const server = IS_PROD ?
     "https://apnacollegebackend.onrender.com" :
 
-    "http://localhost:8000"
+    "http://10.201.239.118.nip.io:8000"
 
 
 export default server;
