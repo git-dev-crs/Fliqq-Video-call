@@ -66,7 +66,14 @@ export default function Authentication() {
             }
         } catch (err) {
             console.log(err);
-            let message = (err.response?.data?.message) || "An error occurred";
+            let message;
+            if (err.response && err.response.data && err.response.data.message) {
+                message = err.response.data.message;
+            } else if (err.message) {
+                message = `Request Failed: ${err.message}`;
+            } else {
+                message = "An unexpected error occurred";
+            }
             setError(message);
             setIsAuthenticating(false);
         }

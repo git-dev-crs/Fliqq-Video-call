@@ -27,9 +27,28 @@ export default function History() {
     const { getHistoryOfUser, getUserDetails } = useContext(AuthContext);
     const [meetings, setMeetings] = useState([]);
     const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState("Loading...");
     const navigate = useNavigate();
 
-    const handleRefresh = () => navigate("/home");
+    const handleRefresh = () => {
+        setLoadingMessage("Taking you to Home...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/home");
+        }, 1500);
+    }
+
+    const handleHomeNavigation = () => {
+        setLoadingMessage("Loading...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate("/home");
+        }, 1500);
+    }
+
     const handleHistoryNavigation = () => { }; // Already on history
     const handleProfileNavigation = () => navigate("/profile");
 
@@ -64,10 +83,73 @@ export default function History() {
         return `${day}/${month}/${year}`;
     }
 
+    if (loading) {
+        return (
+            <Box sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#ffffff',
+                position: 'relative'
+            }}>
+                {/* Creative Sonar Ripple Animation */}
+                <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite'
+                    }} />
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite',
+                        animationDelay: '0.75s'
+                    }} />
+                    <Box sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        zIndex: 1
+                    }} />
+                </Box>
+
+                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1.1rem', fontWeight: 500, letterSpacing: '0.5px' }}>
+                    {loadingMessage}
+                </Typography>
+                <style>
+                    {`
+                        @keyframes ripple {
+                            0% {
+                                transform: scale(1);
+                                opacity: 0.7;
+                            }
+                            100% {
+                                transform: scale(4);
+                                opacity: 0;
+                            }
+                        }
+                    `}
+                </style>
+            </Box>
+        )
+    }
+
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
             <Header
                 handleRefresh={handleRefresh}
+                handleHomeNavigation={handleHomeNavigation}
                 handleHistoryNavigation={handleHistoryNavigation}
                 handleProfileNavigation={handleProfileNavigation}
                 userData={userData}

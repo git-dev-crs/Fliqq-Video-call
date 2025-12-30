@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, Typography, Button, Container, AppBar, Toolbar } from '@mui/material';
+import { Box, Typography, Button, Container, AppBar, Toolbar, IconButton } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import RestoreIcon from '@mui/icons-material/Restore';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
+
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, handleProfileNavigation, userData }) => {
     const navigate = useNavigate();
@@ -12,18 +14,18 @@ const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, 
         <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 1 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                    {/* Logo Section - Navigates to Landing Page */}
+                    {/* Logo Section */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={handleRefresh}>
                         <Box
                             component="img"
                             src="/fliq_logo_white.png"
                             alt="Fliqq Logo"
-                            sx={{ height: 40, width: 'auto' }}
+                            sx={{ height: 35, width: 'auto' }} // Slightly smaller logo on mobile
                         />
                         <Typography
                             component="h1"
                             sx={{
-                                fontSize: '1.5rem',
+                                fontSize: { xs: '1.2rem', md: '1.5rem' }, // Responsive font size
                                 fontWeight: 800,
                                 color: '#b588d9',
                                 fontFamily: 'Poppins, sans-serif'
@@ -34,48 +36,66 @@ const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, 
                     </Box>
 
                     {/* Navigation Actions */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                        <Button
-                            startIcon={<HomeIcon sx={{ color: '#b588d9' }} />}
-                            onClick={handleHomeNavigation}
-                            sx={{
-                                color: '#111827',
-                                textTransform: 'none',
-                                fontWeight: 500,
-                                fontSize: '0.95rem',
-                                '&:hover': { bgcolor: '#f3f4f6' }
-                            }}
-                        >
-                            Home
-                        </Button>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 3 } }}> {/* Smaller gap on mobile */}
 
-                        <Button
-                            startIcon={<RestoreIcon sx={{ color: '#b588d9' }} />}
-                            onClick={handleHistoryNavigation}
-                            sx={{
-                                color: '#111827',
-                                textTransform: 'none',
-                                fontWeight: 500,
-                                fontSize: '0.95rem',
-                                '&:hover': { bgcolor: '#f3f4f6' }
-                            }}
-                        >
-                            History
-                        </Button>
+                        {/* Home */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <IconButton onClick={handleHomeNavigation} sx={{ color: '#b588d9' }}>
+                                <HomeIcon />
+                            </IconButton>
+                            <Typography
+                                onClick={handleHomeNavigation}
+                                sx={{
+                                    display: { xs: 'none', md: 'block' },
+                                    color: '#111827',
+                                    fontWeight: 500,
+                                    fontSize: '0.95rem',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Home
+                            </Typography>
+                        </Box>
 
-                        {/* User Profile - Navigates to /profile */}
-                        <Box
-                            sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-                        >
-                            <PersonIcon
-                                sx={{ color: '#b588d9', cursor: 'pointer' }}
+                        {/* History */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <IconButton onClick={handleHistoryNavigation} sx={{ color: '#b588d9' }}>
+                                <RestoreIcon />
+                            </IconButton>
+                            <Typography
+                                onClick={handleHistoryNavigation}
+                                sx={{
+                                    display: { xs: 'none', md: 'block' },
+                                    color: '#111827',
+                                    fontWeight: 500,
+                                    fontSize: '0.95rem',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                History
+                            </Typography>
+                        </Box>
+
+                        {/* Profile */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <IconButton onClick={handleProfileNavigation} sx={{ color: '#b588d9' }}>
+                                <PersonIcon />
+                            </IconButton>
+                            <Typography
                                 onClick={handleProfileNavigation}
-                            />
-                            <Typography sx={{ color: '#111827', fontWeight: 500, fontSize: '0.95rem' }}>
+                                sx={{
+                                    display: { xs: 'none', md: 'block' },
+                                    color: '#111827',
+                                    fontWeight: 500,
+                                    fontSize: '0.95rem',
+                                    cursor: 'pointer'
+                                }}
+                            >
                                 {userData?.username || userData?.name || "User"}
                             </Typography>
                         </Box>
 
+                        {/* Logout - Text on Desktop, Icon on Mobile */}
                         <Button
                             onClick={() => {
                                 localStorage.removeItem("token")
@@ -83,6 +103,7 @@ const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, 
                             }}
                             variant="outlined"
                             sx={{
+                                display: { xs: 'none', md: 'flex' },
                                 color: '#b588d9',
                                 borderColor: '#b588d9',
                                 textTransform: 'none',
@@ -99,6 +120,18 @@ const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, 
                         >
                             Logout
                         </Button>
+                        <IconButton
+                            onClick={() => {
+                                localStorage.removeItem("token")
+                                navigate("/")
+                            }}
+                            sx={{
+                                display: { xs: 'flex', md: 'none' },
+                                color: '#b588d9'
+                            }}
+                        >
+                            <LogoutIcon />
+                        </IconButton>
                     </Box>
                 </Toolbar>
             </Container>

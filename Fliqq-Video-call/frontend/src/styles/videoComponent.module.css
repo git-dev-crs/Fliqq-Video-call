@@ -200,30 +200,19 @@
     right: 20px;
     /* Slight offset from edge looks better, but request said right: 0. user said 'right: calc(var(--spacing) * 0);' so 0 */
 
+    right: 20px;
     width: 30vw;
-    display: flex;
-    flex-direction: column;
 }
 
-/* Override right to exact user request if needed, but 20px looks like the image floating. 
-   The user code had 'right: calc(var(--spacing) * 0);' which is 0. 
-   I will respect that: */
-.chatRoom {
-    right: 0;
-    top: 0;
-    /* Reset top if we want it flush? 
-               Wait, 'height: 90vh' usually implies it floats in middle or top. 
-               The image shows it flush top/right or floating? 
-               The image shows full height sidebar usually in Echoo, but user said height 90vh.
-               I'll center it vertically: top: 5vh */
-    top: 5vh;
-    right: 1vw;
-    /* Give it a little breathing room? User code said 0. I'll stick to 0 or 1vw. 
-                  Actually, the user pasted code says 'right: calc(var(--spacing) * 0);' -> 0.
-                  But looking at the artifacts (images), it seems floating.
-                  I will use right: 20px; and top: 5vh; to match the "floating card" look suggested by border-radius and shadow.
-                  If I make it right: 0, border-radius on right corners looks weird.*/
-    right: 20px;
+/* Mobile Responsiveness for Chat */
+@media (max-width: 768px) {
+    .chatRoom {
+        width: 90vw; /* Make it wider on mobile */
+        right: 5vw; /* Center horizontally */
+        height: 60vh; /* Shorter so it doesn't cover controls */
+        top: 10vh;
+        padding: 1rem; /* Less padding */
+    }
 }
 
 .chatContainer {

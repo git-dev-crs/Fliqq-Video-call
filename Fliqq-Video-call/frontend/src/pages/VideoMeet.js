@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import io from "socket.io-client";
-import { Badge, IconButton, TextField, Box, Typography } from '@mui/material';
+import { Badge, IconButton, TextField, Box, Typography, Paper } from '@mui/material';
 import { Button } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff'
@@ -26,6 +26,7 @@ const peerConfigConnections = {
 }
 
 export default function VideoMeetComponent() {
+    // Ensuring recompile for Paper import
     const location = useLocation();
 
     var socketRef = useRef();
@@ -539,14 +540,69 @@ export default function VideoMeetComponent() {
 
     if (askForUsername) {
         return (
-            <div>
-                <h2>Enter into Lobby </h2>
-                <TextField id="outlined-basic" label="Username" value={username} onChange={e => setUsername(e.target.value)} variant="outlined" />
-                <Button variant="contained" onClick={connect}>Connect</Button>
-                <div>
-                    <video ref={localVideoref} autoPlay muted></video>
-                </div>
-            </div>
+            <Box sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#f9fafb',
+                p: 2
+            }}>
+                <Paper elevation={3} sx={{
+                    p: 4,
+                    width: '100%',
+                    maxWidth: 400,
+                    borderRadius: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 3
+                }}>
+                    <Typography variant="h5" fontWeight="bold">Enter Lobby</Typography>
+
+                    <Box sx={{
+                        width: '100%',
+                        height: 200,
+                        bgcolor: '#000',
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                        position: 'relative'
+                    }}>
+                        <video
+                            ref={localVideoref}
+                            autoPlay
+                            muted
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        ></video>
+                    </Box>
+
+                    <TextField
+                        label="Display Name"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        fullWidth
+                        variant="outlined"
+                        placeholder="Enter your name"
+                        InputProps={{ sx: { borderRadius: 2 } }}
+                    />
+
+                    <Button
+                        variant="contained"
+                        onClick={connect}
+                        fullWidth
+                        size="large"
+                        disabled={!username.trim()}
+                        sx={{
+                            borderRadius: 2,
+                            bgcolor: '#9c27b0',
+                            fontWeight: 'bold',
+                            '&:hover': { bgcolor: '#7b1fa2' }
+                        }}
+                    >
+                        Join Meeting
+                    </Button>
+                </Paper>
+            </Box>
         )
     }
 

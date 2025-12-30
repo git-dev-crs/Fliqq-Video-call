@@ -26,6 +26,9 @@ export default function LandingPage() {
     const { getUserDetails } = useContext(AuthContext);
     const [userData, setUserData] = useState(null);
 
+    const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState("Loading...");
+
     useEffect(() => {
         const fetchUser = async () => {
             const token = localStorage.getItem("token");
@@ -42,21 +45,98 @@ export default function LandingPage() {
     }, [getUserDetails]);
 
     const handleRefresh = () => {
-        router("/");
+        setLoadingMessage("Taking you to Home...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            router("/");
+        }, 1500);
     }
 
     const handleHomeNavigation = () => {
-        router("/home");
+        setLoadingMessage("Loading...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            router("/home");
+        }, 1500);
     }
 
 
 
     const handleHistoryNavigation = () => {
-        router("/history");
+        setLoadingMessage("Loading Meeting History...");
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            router("/history");
+        }, 2000);
     }
 
     const handleProfileNavigation = () => {
         router("/profile");
+    }
+
+    if (loading) {
+        return (
+            <Box sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#ffffff',
+                position: 'relative'
+            }}>
+                {/* Creative Sonar Ripple Animation */}
+                <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite'
+                    }} />
+                    <Box sx={{
+                        position: 'absolute',
+                        width: 50,
+                        height: 50,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        opacity: 0.7,
+                        animation: 'ripple 1.5s linear infinite',
+                        animationDelay: '0.75s'
+                    }} />
+                    <Box sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        bgcolor: '#a855f7',
+                        zIndex: 1
+                    }} />
+                </Box>
+
+                <Typography sx={{ mt: 2, color: '#6b7280', fontSize: '1.1rem', fontWeight: 500, letterSpacing: '0.5px' }}>
+                    {loadingMessage}
+                </Typography>
+                <style>
+                    {`
+                        @keyframes ripple {
+                            0% {
+                                transform: scale(1);
+                                opacity: 0.7;
+                            }
+                            100% {
+                                transform: scale(4);
+                                opacity: 0;
+                            }
+                        }
+                    `}
+                </style>
+            </Box>
+        )
     }
 
     return (
@@ -602,7 +682,7 @@ export default function LandingPage() {
                             <Box sx={{ width: { xs: '100%', md: '33.333%' } }}>
                                 <Box
                                     component="img"
-                                    src="/block section page.webp"
+                                    src="/block_section_page.webp"
                                     alt="Start a call"
                                     sx={{
                                         width: '100%',
@@ -644,7 +724,7 @@ export default function LandingPage() {
                             <Box sx={{ width: { xs: '100%', md: '33.333%' } }}>
                                 <Box
                                     component="img"
-                                    src="/block section page-1.webp"
+                                    src="/block_section_page_1.webp"
                                     alt="Share link"
                                     sx={{
                                         width: '100%',
@@ -683,7 +763,7 @@ export default function LandingPage() {
                             <Box sx={{ width: { xs: '100%', md: '33.333%' } }}>
                                 <Box
                                     component="img"
-                                    src="/block section page-2.webp"
+                                    src="/block_section_page_2.webp"
                                     alt="Track meetings"
                                     sx={{
                                         width: '100%',

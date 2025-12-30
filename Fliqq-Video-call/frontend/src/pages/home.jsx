@@ -225,7 +225,8 @@ function Dashboard() {
                                 }
                             }}
                             onClick={() => {
-                                const randomCode = Math.random().toString(36).substring(2, 7);
+                                const generateCode = () => Math.random().toString(36).substring(2, 5) + '-' + Math.random().toString(36).substring(2, 6) + '-' + Math.random().toString(36).substring(2, 5);
+                                const randomCode = generateCode();
                                 setLoadingMessage("Creating Meeting...");
                                 setLoading(true);
                                 setTimeout(() => {
