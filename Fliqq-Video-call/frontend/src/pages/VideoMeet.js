@@ -21,7 +21,9 @@ var connections = {};
 
 const peerConfigConnections = {
     "iceServers": [
-        { "urls": "stun:stun.l.google.com:19302" }
+        { "urls": "stun:stun.l.google.com:19302" },
+        { "urls": "stun:stun1.l.google.com:19302" },
+        { "urls": "stun:stun2.l.google.com:19302" }
     ]
 }
 
@@ -276,7 +278,7 @@ export default function VideoMeetComponent() {
                             connections[fromId].setLocalDescription(description).then(() => {
                                 socketRef.current.emit('signal', fromId, JSON.stringify({ 'sdp': connections[fromId].localDescription }))
                             }).catch(e => console.log(e))
-                        }).catch(e => console.log(e))
+                        }).catch(e => console.log(e)) // Original catch block
                     }
                 }).catch(e => console.log(e))
             }
@@ -296,7 +298,8 @@ export default function VideoMeetComponent() {
         socketRef.current.on('signal', gotMessageFromServer)
 
         socketRef.current.on('connect', () => {
-            socketRef.current.emit('join-call', window.location.href)
+            // FIX: Use pathname (Meeting Code) so localhost and ngrok users join SAME room
+            socketRef.current.emit('join-call', window.location.pathname)
             socketIdRef.current = socketRef.current.id
 
             socketRef.current.on('chat-message', addMessage)
