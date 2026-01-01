@@ -96,17 +96,19 @@
 /* Main User Video (Self) */
 .meetUserVideo {
     position: absolute;
-    bottom: 10vh;
-    /* bottom-[10vh] */
-    left: 50%;
-    /* left-1/2 */
-    transform: translateX(-50%);
-    /* -translate-x-1/2 */
-    height: 30vh;
-    /* h-[30vh] */
+    bottom: 120px;
+    /* Moved up slightly to avoid controls */
+    right: 20px;
+    /* Moved to right corner for standard PIP feel */
+    left: auto;
+    /* Remove centering */
+    transform: none;
+
+    height: 150px;
+    /* Smaller PIP on mobile */
     width: auto;
+
     border-radius: 1rem;
-    /* rounded-2xl */
     border: 2px solid var(--color-white);
     box-shadow: var(--tw-shadow);
     z-index: 10;
@@ -207,11 +209,15 @@
 /* Mobile Responsiveness for Chat */
 @media (max-width: 768px) {
     .chatRoom {
-        width: 90vw; /* Make it wider on mobile */
-        right: 5vw; /* Center horizontally */
-        height: 60vh; /* Shorter so it doesn't cover controls */
+        width: 90vw;
+        /* Make it wider on mobile */
+        right: 5vw;
+        /* Center horizontally */
+        height: 60vh;
+        /* Shorter so it doesn't cover controls */
         top: 10vh;
-        padding: 1rem; /* Less padding */
+        padding: 1rem;
+        /* Less padding */
     }
 }
 
