@@ -11,16 +11,16 @@ const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, 
     const navigate = useNavigate();
 
     return (
-        <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)', p: 1 }}>
+        <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', p: 1 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                     {/* Logo Section */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={handleRefresh}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', border: 'none', outline: 'none', userSelect: 'none' }} onClick={handleRefresh}>
                         <Box
                             component="img"
                             src="/fliq_logo_white.png"
                             alt="Fliqq Logo"
-                            sx={{ height: 35, width: 'auto' }} // Slightly smaller logo on mobile
+                            sx={{ height: 35, width: 'auto', border: 'none', outline: 'none' }} // Slightly smaller logo on mobile
                         />
                         <Typography
                             component="h1"
