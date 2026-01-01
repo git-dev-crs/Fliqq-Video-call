@@ -158,12 +158,12 @@ export default function LandingPage() {
                 <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.7)', py: '0.5rem', px: '1rem' }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', border: 'none' }}>
                                 <Box
                                     component="img"
                                     src="/fliq_logo_white.png"
                                     alt="Logo"
-                                    sx={{ height: 40, width: 'auto' }}
+                                    sx={{ height: 40, width: 'auto', border: 'none' }}
                                 />
                                 <Typography
                                     component="h1"
