@@ -57,9 +57,16 @@ function MeetingLobby() {
     const getVideo = async () => {
         setIsLoading(true);
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            // Mobile-friendly constraints
+            const constraints = {
+                video: { facingMode: 'user' },
+                audio: true
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
+                // Important: Ensure video plays on mobile
+                videoRef.current.play().catch(e => console.error("Play error:", e));
                 setMediaError("");
                 setOpenPermissionDialog(false);
             }
@@ -67,8 +74,10 @@ function MeetingLobby() {
             console.error("Error accessing media devices:", err);
             if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
                 setMediaError("Permission Denied");
+            } else if (err.name === 'NotReadableError') {
+                setMediaError("Camera Busy");
             } else {
-                setMediaError("Camera Error");
+                setMediaError(`${err.name}: ${err.message}`);
             }
             setOpenPermissionDialog(true);
         } finally {
