@@ -58,7 +58,12 @@ export default function GuestLobby() {
     const getVideo = async () => {
         setIsLoading(true);
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            // Mobile-friendly constraints
+            const constraints = {
+                video: { facingMode: 'user' }, // Prefer front camera
+                audio: true
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
                 setMediaError("");
@@ -66,10 +71,15 @@ export default function GuestLobby() {
             }
         } catch (err) {
             console.error("Error accessing media devices:", err);
+            // Detailed error for debugging
             if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
                 setMediaError("Permission Denied");
+            } else if (err.name === 'NotReadableError') {
+                setMediaError("Camera Busy"); // Common on mobile if another app uses it
+            } else if (err.name === 'OverconstrainedError') {
+                setMediaError("Incompatible Device");
             } else {
-                setMediaError("Camera Error");
+                setMediaError(`${err.name}: ${err.message}`); // Show actual error for debugging
             }
             setOpenPermissionDialog(true);
         } finally {
