@@ -18,3 +18,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Fix for "Blinking Cursor" artifact on non-input elements */
+body {
+  caret-color: transparent;
+  /* Hide blinking cursor by default */
+}
+
+/* Restore cursor for actual inputs */
+input,
+textarea,
+[contenteditable="true"] {
+  caret-color: auto;
+  user-select: text;
+}
