@@ -11,7 +11,7 @@ const Header = ({ handleRefresh, handleHomeNavigation, handleHistoryNavigation, 
     const navigate = useNavigate();
 
     return (
-        <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid #e5e7eb', boxShadow: '0 10px 40px -5px rgba(0, 0, 0, 0.6)', p: 1 }}>
+        <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid #e5e7eb', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)', p: 1 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                     {/* Logo Section */}
