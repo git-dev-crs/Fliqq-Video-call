@@ -155,7 +155,7 @@ export default function LandingPage() {
                     userData={userData}
                 />
             ) : (
-                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.7)', py: '0.5rem', px: '1rem' }}>
+                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid #e5e7eb', boxShadow: '0 10px 40px -5px rgba(0, 0, 0, 0.6)', py: '0.5rem', px: '1rem' }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', border: 'none' }}>
@@ -184,6 +184,7 @@ export default function LandingPage() {
                                     sx={{
                                         px: 2,
                                         py: 1,
+                                        fontWeight: 600,
                                         color: '#b588d9',
                                         border: '1px solid #b588d9',
                                         borderRadius: '8px',
@@ -202,6 +203,7 @@ export default function LandingPage() {
                                     sx={{
                                         px: 2,
                                         py: 1,
+                                        fontWeight: 600,
                                         color: 'white',
                                         bgcolor: '#099be4ff',
                                         borderRadius: '8px',
@@ -255,6 +257,7 @@ export default function LandingPage() {
                                         width: 'auto',
                                         px: 2,
                                         py: 1,
+                                        fontWeight: 600,
                                         color: '#b588d9',
                                         border: '1px solid #b588d9',
                                         borderRadius: '8px',
@@ -277,6 +280,7 @@ export default function LandingPage() {
                                         width: 'auto',
                                         px: 2,
                                         py: 1,
+                                        fontWeight: 600,
                                         color: 'white',
                                         bgcolor: '#0284C7',
                                         borderRadius: '8px',
@@ -344,7 +348,7 @@ export default function LandingPage() {
                             onClick={() => router("/guest")}
                             sx={{
                                 fontFamily: 'monospace',
-                                fontWeight: 400,
+                                fontWeight: 600,
                                 px: { xs: 1, md: 2 },
                                 py: 1,
                                 mr: 2,
