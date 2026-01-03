@@ -155,7 +155,7 @@ export default function LandingPage() {
                     userData={userData}
                 />
             ) : (
-                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid #e5e7eb', boxShadow: '0 10px 40px -5px rgba(0, 0, 0, 0.6)', py: '0.5rem', px: '1rem' }}>
+                <AppBar position="static" color="transparent" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid #e5e7eb', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)', py: '0.5rem', px: '1rem' }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', border: 'none' }}>
