@@ -122,6 +122,9 @@
         /* md:left-6 (6 * 0.25rem = 1.5rem) */
         transform: translateX(0);
         /* md:translate-x-0 */
+        height: 225px;
+        width: 370px;
+        bottom: 20px;
     }
 }
 
