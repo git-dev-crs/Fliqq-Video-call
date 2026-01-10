@@ -87,4 +87,4 @@ We welcome contributions!
 [![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat&logo=gmail&logoColor=white)](mailto:mohitjatav326@gmail.com)
 
 ---
-<p align="center">Made with ❤️ by Mohit Jatav</p>
+<p align="center">Made by Mohit Jatav</p>
